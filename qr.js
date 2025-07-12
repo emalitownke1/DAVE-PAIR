@@ -87,7 +87,7 @@ https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k
 
 *💻 Source Code:*  
 Fork & explore the project on GitHub:  
-https://github.com/gifteddevsmd/Gifteddaves-pair
+https://github.com/giftedsession/DAVE-PAIR
 
 ——————
 
@@ -123,7 +123,7 @@ https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k
 
 *💻 Source Code:*  
 Fork & explore the project on GitHub:  
-https://github.com/gifteddevsmd/Gifteddaves-pair
+https://github.com/giftedsession/DAVE-PAIR
 
 > *© Powered by Gifted Dave*
 Stay cool and hack smart. ✌🏻*`;
