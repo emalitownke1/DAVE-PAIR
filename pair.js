@@ -150,3 +150,6 @@ router.get('/', async (req, res) => {
 
     await MALVIN_PAIR_CODE(); // ✅ Fixed function name
 });
+
+// ✅ CRITICAL: Export the router so it can be used as middleware
+module.exports = router;
