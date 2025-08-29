@@ -6,9 +6,9 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "start": "pm2 start malvin.js --deep-monitoring --attach --name malvin",
-    "stop": "pm2 stop malvin",
-    "restart": "pm2 restart malvin"
+    "start": "pm2 start index.js --deep-monitoring --attach --name index",
+    "stop": "pm2 stop index",
+    "restart": "pm2 restart index"
   },
   "author": "dave Tech",
   "license": "GPL-3.0 license",
