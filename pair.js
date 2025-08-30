@@ -113,21 +113,37 @@ router.get('/', async (req, res) => {
                     const session = await Malvin.sendMessage(Malvin.user.id, { text: sid });
 
                     const MALVIN_TEXT = `
-🎉 *Welcome to Trashcore-system!* 🚀  
+╔════════════════════◇
+║『 SESSION CONNECTED』
+║ ✨ VENOM-XMD 🔷
+║ ✨ Gifted Dave 🔷
+╚════════════════════╝
 
-🔒 *Your Session ID* is ready!  ⚠️ _Keep it private and secure — dont share it with anyone._ 
+---
 
-🔑 *Copy & Paste the SESSION_ID Above*🛠️ Add it to your environment variable: *SESSION_ID*.  
+╔════════════════════◇
+║『 YOU'VE CHOSEN VENOM-XMD 』
+║ - Set the session ID in Heroku:
+║ - SESSION_ID: 
+╚════════════════════╝
 
-💡 *Whats Next?* 
-1️⃣ Explore all the cool features of TRASHCORE-SYSTEM.
-2️⃣ Stay updated with our latest releases and support.
-3️⃣ Enjoy seamless WhatsApp automation! 🤖  
+╔════════════════════◇
+║ 『••• VISIT FOR HELP •••』
+║ ❍ YouTube: youtube.com/@davlodavlo19
+║ ❍ Owner: 254104260236
+║ ❍ Repo: https://github.com/giftdee/VENOM-XMD 
+║ ❍ WhatsApp Group: https://chat.whatsapp.com/LfTFxkUQ1H7Eg2D0vR3n6g
+║ ❍ WhatsApp Channel: https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k
+║ ❍ Instagram: https://www.instagram.com/gifted_dave_
+║ ☬ ☬ ☬ ☬
+╚═════════════════════╝
 
-🔗 *Join Our Support Group:* 👉 [Click Here to Join](https://chat.whatsapp.com/CzFlFQrkdzxFw0pxCBYM7H?mode=ac_t) 
+𒂀 Enjoy VENOM-XMD
 
+---
 
-🚀 _Thanks for choosing TRASHCORE-BOT— Let the automation begin!_ ✨`;
+Don't Forget To Give Star ⭐ To My Repo
+______________________________`;
 
                     await Malvin.sendMessage(Malvin.user.id, { text: MALVIN_TEXT }, { quoted: session });
 
