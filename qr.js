@@ -1,4 +1,4 @@
-const { makeid } = require('./gen-id');
+const { makeid } = require('./qr');
 const express = require('express');
 const QRCode = require('qrcode');
 const fs = require('fs');
