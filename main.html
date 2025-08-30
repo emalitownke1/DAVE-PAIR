@@ -1,132 +1,507 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="" type="image/x-icon">
-  <style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Digitex Xmd Bot" />
+  <title>DAVE SESSION</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+    :root {
+      --primary: linear-gradient(135deg, #1E90FF, #800000);
+      --bg: #000000;
+      --glass: rgba(255, 255, 255, 0.05);
+      --text: #ffffff;
+      --muted: #228B22;
+      --highlight: #696969;
+      --radius: 16px;
+      --blur: 12px;
+      --transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --glow: 0 0 15px rgba(0, 212, 255, 0.3);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      background-color: black;
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      background: var(--glass);
+      backdrop-filter: blur(var(--blur));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: var(--glow);
+    }
+
+    .status {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .status-item {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      color: white;
+      gap: 0.7rem;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
     }
 
-    {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "url": "https://railway.app",
-            "logo": "https://files.catbox.moe/nxzaly.jpg"
+    .status-item:hover {
+      background: rgba(0, 212, 255, 0.1);
+      border-color: var(--highlight);
     }
 
-    .button-container {
-      text-align: center;
+    .status-item i {
+      color: var(--highlight);
+    }
+
+    main {
+      flex: 1;
+      padding: 3rem;
       display: flex;
       flex-direction: column;
       align-items: center;
+      gap: 2.5rem;
     }
 
-    h3 {
-      margin-top: -40px;
-      opacity: 0;
-      animation: fadeIn 3s forwards;
+    .tools {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      width: 100%;
+      max-width: 1200px;
     }
 
-    .button {
-      width: 140px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 0px 15px;
-      background-color: red;
-      border-radius: 10px;
-      border: none;
-      color: white;
-      position: relative;
+    .tool {
+      background: var(--glass);
+      backdrop-filter: blur(var(--blur));
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+      transition: var(--transition);
       cursor: pointer;
-      font-weight: 900;
-      transition-duration: .2s;
-      background: linear-gradient(0deg, #000, #272727);
-      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
     }
 
-  
-    footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #222; /* Darker gray footer background */
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
-    font-size: 14px;
-    
-  }
-    .button:before, .button:after {
+    .tool::before {
       content: '';
       position: absolute;
-      left: -2px;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .tool:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), var(--glow);
+      border-color: rgba(0, 212, 255, 0.2);
+    }
+
+    .tool:hover::before {
+      opacity: 1;
+    }
+
+    .tool i {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      display: block;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: var(--transition);
+    }
+
+    .tool h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 1rem;
+      text-align: center;
+      max-width: 800px;
+      padding: 1rem;
+      border-radius: var(--radius);
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .note a {
+      color: var(--highlight);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .note a:hover {
+      text-shadow: 0 0 10px var(--highlight);
+    }
+
+    .music-player {
+      width: 100%;
+      max-width: 1000px;
+      background: var(--glass);
+      border-radius: var(--radius);
+      padding: 2rem;
+      backdrop-filter: blur(var(--blur));
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .music-player h2 {
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .track {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1.2rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+    }
+
+    .track:hover {
+      background: rgba(0, 0, 0, 0.4);
+      border-color: rgba(0, 212, 255, 0.2);
+    }
+
+    .progress {
+      width: 300px;
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      width: 0%;
+      background: linear-gradient(90deg, #FF4500, #000000);
+      height: 100%;
+      transition: width 0.1s linear;
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      right: 0;
       top: -2px;
-      border-radius: 10px;
-      background: linear-gradient(45deg, #48ff00, #15ff00, #000000,#000000, #ff0000);
-      background-size: 400%;
-      width: calc(100% + 4px);
-      height: calc(100% + 4px);
-      z-index: -1;
-      animation: steam 10s linear infinite;
+      width: 10px;
+      height: 10px;
+      background: white;
+      border-radius: 50%;
+      transform: translateX(50%);
+      opacity: 0;
+      transition: opacity 0.2s;
     }
 
-    @keyframes steam {
-      0% {
-        background-position: 0 0;
+    .track:hover .progress-fill::after {
+      opacity: 1;
+    }
+
+    button {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--highlight);
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    button:hover {
+      background: rgba(0, 212, 255, 0.1);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+      transform: scale(1.05);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--muted);
+      min-width: 50px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 1rem 1.5rem;
+        flex-direction: column;
+        gap: 1rem;
       }
 
-      50% {
-        background-position: 400% 0;
+      main {
+        padding: 1.5rem;
       }
 
-      100% {
-        background-position: 0 0;
+      .tools {
+        grid-template-columns: 1fr;
       }
-    }
 
-    .button:after {
-      filter: blur(50px);
-    }
+      .track {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
 
-    .button span {
-      z-index: 1;
-    }
+      .progress {
+        width: 100%;
+      }
 
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
+      .controls {
+        width: 100%;
+        justify-content: space-between;
       }
     }
   </style>
 </head>
 <body>
-  <div class="button-container">
-    <h3> DAVE SESSION</h3>
-    <div></div>
-    <a href="/qr" class="button" target="_blank"> <span>QR-CODE</span> </a> <br>
-    <a href="/pair" class="button" target="_blank"> <span>PAIRING-CODE</span> </a> <br>
-    <a href="https://https://github.com/giftdee/DAVE-PAIR/fork" class="button" target="_blank"> <span>FORK DAVE-MD</span> </a> <br> </a>
-    <a href="https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k" class="button" target="_blank"> <span>WhatsApp</span> </a> <br>
+  <header>
+    <div class="logo">DAVE</div>
+    <div class="status">
+      <div class="status-item"><i class="fas fa-bolt"></i> <span id="battery">--%</span></div>
+      <div class="status-item"><i class="fas fa-wifi"></i> <span id="ip">Loading...</span></div>
+    </div>
+  </header>
 
-    <p>HAVE ANY ERROR CLICK ERROR BUTTON</p>
+  <main>
+    <div class="tools">
+      <div class="tool" onclick="window.open(`/pair`)">
+        <i class="fas fa-link"></i>
+        <h3>PAIR CODE</h3>
+        <p class="muted">Connect to WhatsApp by pairing your code</p>
+      </div>
+      <div class="tool" onclick="window.open(`/qr`)">
+        <i class="fas fa-qrcode"></i>
+        <h3>QR CODE</h3>
+        <p class="muted">Alternative connection with scanning your device</p>
+      </div>
+      <div class="tool" onclick="window.open(`https://github.com/giftdee/DAVE_XMD`)">
+        <i class="fab fa-github"></i>
+        <h3>Open DAVE-XMD Repo</h3>
+        <p class="muted">Bot Repo</p>
+      </div>
+      <div class="tool" onclick="window.open(`https://developerdave.com`)">
+        <i class="fab fa-page"></i>
+        <h3>Support Owner Dave Host Website Page by using</h3>
+        <p class="muted">Host Website</p>
+      </div>
+      <div class="tool" onclick="window.open(`https://wa.me/254104260236?text=hellow sir`)">
+        <i class="fas fa-headset"></i>
+        <h3>CONTACT OWNER</h3>
+        <p class="muted">Developer and Support your project</p>
+      </div>
+      <div class="tool" onclick="window.open(`https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k`)">
+        <i class="fas fa-broadcast-tower"></i>
+        <h3>WA CHANNEL</h3>
+        <p class="muted">Get all Bots Update and New Script here</p>
+      </div>
+    </div>
 
-    <a href="https://wa.me/254104260236" class="button" target="_blank"> <span>ERROR</span> </a> <br>
+    <div class="note">
+      If you encounter any issues, please contact the developer for support.🤝
+    </div>
 
-    <footer>
-     DAVE &copy; <span id="currentYear"></span>
-    </footer>
-  
+    <div class="music-player">
+      <h2>NOW PLAYING</h2>
+      <div class="track">
+        <div>
+          <strong>Dave Song</strong>
+          <div class="muted">Dev GIFTED DEV</div>
+        </div>
+        <div class="controls">
+          <button onclick="togglePlay('audio1')"><i class="fas fa-play"></i> PLAY</button>
+          <div class="progress"><div class="progress-fill" id="progress1"></div></div>
+          <span class="time" id="time1">0:00</span>
+        </div>
+        <audio id="audio1" src="https://files.catbox.moe/tkjzh7.m4a"></audio>
+      </div>
+    </div>
+  </main>
+  <script>
+    // Smooth animations
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+        document.body.style.transition = 'opacity 0.5s ease';
+        document.body.style.opacity = '1';
+      }, 100);
+    });
+
+    // Update clock in title
+    const updateTime = () => {
+      const update = () => {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-US', { hour12: false });
+        document.title = `DAVE XMD MD | ${timeStr}`;
+      };
+      update();
+      setInterval(update, 1000);
+    }
+
+    // Battery status
+    const updateBattery = async () => {
+      if (navigator.getBattery) {
+        try {
+          const battery = await navigator.getBattery();
+          const setBattery = () => {
+            const batteryPercent = Math.round(battery.level * 100);
+            const batteryElement = document.getElementById('battery');
+            batteryElement.innerText = `${batteryPercent}%`;
+
+            // Add battery icon based on level
+            let batteryIcon = 'fa-bolt';
+            if (batteryPercent <= 20) batteryIcon = 'fa-battery-quarter';
+            else if (batteryPercent <= 50) batteryIcon = 'fa-battery-half';
+            else if (batteryPercent <= 80) batteryIcon = 'fa-battery-three-quarters';
+            else if (batteryPercent <= 100) batteryIcon = 'fa-battery-full';
+
+            batteryElement.previousElementSibling.className = `fas ${batteryIcon}`;
+          };
+
+          battery.addEventListener('levelchange', setBattery);
+          battery.addEventListener('chargingchange', setBattery);
+          setBattery();
+        } catch (error) {
+          console.error('Battery API error:', error);
+        }
+      }
+    }
+
+    // Music player controls
+    const togglePlay = (id) => {
+      const audio = document.getElementById(id);
+      const progress = document.getElementById('progress1');
+      const time = document.getElementById('time1');
+      const button = document.querySelector('button[onclick*="'+id+'"]');
+
+      if (audio.paused) {
+        audio.play();
+        button.innerHTML = '<i class="fas fa-pause"></i> PAUSE';
+
+        audio.ontimeupdate = () => {
+          const percent = (audio.currentTime / audio.duration) * 100;
+          progress.style.width = percent + '%';
+
+          const minutes = Math.floor(audio.currentTime / 60);
+          const seconds = Math.floor(audio.currentTime % 60);
+          time.textContent = `${minutes}:${String(seconds).padStart(2, '0')}`;
+        };
+
+        audio.onended = () => {
+          progress.style.width = '0%';
+          time.textContent = '0:00';
+          button.innerHTML = '<i class="fas fa-play"></i> PLAY';
+        };
+      } else {
+        audio.pause();
+        button.innerHTML = '<i class="fas fa-play"></i> PLAY';
+      }
+    }
+
+    // IP address fetch
+    const fetchIP = async () => {
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        document.getElementById('ip').textContent = data.ip;
+      } catch {
+        document.getElementById('ip').textContent = 'Offline';
+      }
+    }
+
+    // Tool hover effects
+    const setupToolHover = () => {
+      const tools = document.querySelectorAll('.tool');
+      tools.forEach(tool => {
+        tool.addEventListener('mouseenter', () => {
+          tool.style.transform = 'translateY(-8px)';
+        });
+        tool.addEventListener('mouseleave', () => {
+          tool.style.transform = 'translateY(0)';
+        });
+      });
+    }
+
+    // Initialize everything
+    const init = () => {
+      updateTime();
+      updateBattery();
+      fetchIP();
+      setupToolHover();
+    };
+
+    window.addEventListener('load', init);
+  </script>
 </body>
   </html>
-  
