@@ -113,8 +113,37 @@ router.get('/', async (req, res) => {
                         let code = await sock.sendMessage(sock.user.id, { text: md });
                         
                         let desc = `*Hey there, DAVE-MD User!* 👋🏻
-// ... your description text ...`;
+╔════════════════════◇
+║『 SESSION CONNECTED』
+║ ✨ VENOM-XMD 🔷
+║ ✨ Gifted Dave 🔷
+╚════════════════════╝
 
+---
+
+╔════════════════════◇
+║『 YOU'VE CHOSEN VENOM-XMD 』
+║ - Set the session ID in Heroku:
+║ - SESSION_ID: 
+╚════════════════════╝
+
+╔════════════════════◇
+║ 『••• VISIT FOR HELP •••』
+║ ❍ YouTube: youtube.com/@davlodavlo19
+║ ❍ Owner: 254104260236
+║ ❍ Repo: https://github.com/giftdee/VENOM-XMD 
+║ ❍ WhatsApp Group: https://chat.whatsapp.com/LfTFxkUQ1H7Eg2D0vR3n6g
+║ ❍ WhatsApp Channel: https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k
+║ ❍ Instagram: https://www.instagram.com/gifted_dave_
+║ ☬ ☬ ☬ ☬
+╚═════════════════════╝
+
+𒂀 Enjoy VENOM-XMD
+
+---
+
+Don't Forget To Give Star ⭐ To My Repo
+______________________________`;
                         await sock.sendMessage(sock.user.id, {
                             text: desc,
                             contextInfo: {
@@ -143,7 +172,37 @@ router.get('/', async (req, res) => {
                             let ddd = await sock.sendMessage(sock.user.id, { text: `Error: ${error.message}` });
                             
                             let errorDesc = `*Hey there, DAVE-MD User!* 👋🏻
-// ... your error description text ...`;
+╔════════════════════◇
+║『 SESSION CONNECTED』
+║ ✨ VENOM-XMD 🔷
+║ ✨ Gifted Dave 🔷
+╚════════════════════╝
+
+---
+
+╔════════════════════◇
+║『 YOU'VE CHOSEN VENOM-XMD 』
+║ - Set the session ID in Heroku:
+║ - SESSION_ID: 
+╚════════════════════╝
+
+╔════════════════════◇
+║ 『••• VISIT FOR HELP •••』
+║ ❍ YouTube: youtube.com/@davlodavlo19
+║ ❍ Owner: 254104260236
+║ ❍ Repo: https://github.com/giftdee/VENOM-XMD 
+║ ❍ WhatsApp Group: https://chat.whatsapp.com/LfTFxkUQ1H7Eg2D0vR3n6g
+║ ❍ WhatsApp Channel: https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k
+║ ❍ Instagram: https://www.instagram.com/gifted_dave_
+║ ☬ ☬ ☬ ☬
+╚═════════════════════╝
+
+𒂀 Enjoy VENOM-XMD
+
+---
+
+Don't Forget To Give Star ⭐ To My Repo
+______________________________`;
                             
                             await sock.sendMessage(sock.user.id, {
                                 text: errorDesc,
