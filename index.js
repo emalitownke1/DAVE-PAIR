@@ -3,16 +3,14 @@ const app = express();
 const __path = process.cwd();
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 8000;
-let server = require('./qr'),
-    code = require('./pair');
+let code = require('./pair'); // Removed server require
 require('events').EventEmitter.defaultMaxListeners = 500;
 
 // ✅ Middleware setup FIRST
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// ✅ API routes
-app.use('/qr', server);
+// ✅ API routes - removed /qr route
 app.use('/code', code);
 
 // ✅ HTML routes
