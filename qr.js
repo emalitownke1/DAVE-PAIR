@@ -1,4 +1,4 @@
-const { makeid } = require('./qr');
+*/const { makeid } = require('./qr');
 const express = require('express');
 const QRCode = require('qrcode');
 const fs = require('fs');
@@ -257,4 +257,4 @@ ______________________________`;
 // REMOVED the destructive setInterval
 // setInterval(() => { process.exit(); }, 180000); // ❌ DELETE THIS
 
-module.exports = router;
+module.exports = router;/*
