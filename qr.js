@@ -13,159 +13,189 @@ const {
     jidNormalizedUser
 } = require("@whiskeysockets/baileys");
 const { upload } = require('./mega');
+
+// Request tracking to prevent duplicates
+const activeSessions = new Map();
+
 function removeFile(FilePath) {
     if (!fs.existsSync(FilePath)) return false;
-    fs.rmSync(FilePath, { recursive: true, force: true });
+    try {
+        fs.rmSync(FilePath, { recursive: true, force: true });
+        return true;
+    } catch (error) {
+        console.error('Error removing file:', error);
+        return false;
+    }
 }
+
+function generateRandomText() {
+    const prefix = "3EB";
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let randomText = prefix;
+    for (let i = prefix.length; i < 22; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        randomText += characters.charAt(randomIndex);
+    }
+    return randomText;
+}
+
 router.get('/', async (req, res) => {
     const id = makeid();
- //   let num = req.query.number;
+    
+    // Prevent multiple requests
+    if (activeSessions.has(id)) {
+        return res.status(429).send('Session already in progress');
+    }
+    activeSessions.set(id, true);
+
+    // Set timeout for response
+    res.setTimeout(120000);
+
+    let qrSent = false;
+
     async function MALVIN_XD_PAIR_CODE() {
-        const {
-            state,
-            saveCreds
-        } = await useMultiFileAuthState('./temp/' + id);
+        const dir = './temp/' + id;
+        
+        // Ensure directory exists
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+
+        const { state, saveCreds } = await useMultiFileAuthState(dir);
+
         try {
-var items = ["Safari"];
-function selectRandomItem(array) {
-  var randomIndex = Math.floor(Math.random() * array.length);
-  return array[randomIndex];
-}
-var randomItem = selectRandomItem(items);
-            
             let sock = makeWASocket({
-                	
-				auth: state,
-				printQRInTerminal: false,
-				logger: pino({
-					level: "silent"
-				}),
-				browser: Browsers.macOS("Desktop"),
-			});
-            
+                auth: {
+                    creds: state.creds,
+                    keys: makeCacheableSignalKeyStore(state.keys, pino({ level: "silent" }))
+                },
+                printQRInTerminal: false,
+                logger: pino({ level: "silent" }),
+                browser: Browsers.macOS("Desktop"),
+                connectTimeoutMs: 60000,
+                keepAliveIntervalMs: 20000
+            });
+
             sock.ev.on('creds.update', saveCreds);
-            sock.ev.on("connection.update", async (s) => {
-                const {
-                    connection,
-                    lastDisconnect,
-                    qr
-                } = s;
-              if (qr) await res.end(await QRCode.toBuffer(qr));
-                if (connection == "open") {
-                    await delay(5000);
-                    let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
-                    let rf = __dirname + `/temp/${id}/creds.json`;
-                    function generateRandomText() {
-                        const prefix = "3EB";
-                        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                        let randomText = prefix;
-                        for (let i = prefix.length; i < 22; i++) {
-                            const randomIndex = Math.floor(Math.random() * characters.length);
-                            randomText += characters.charAt(randomIndex);
-                        }
-                        return randomText;
-                    }
-                    const randomText = generateRandomText();
+            
+            sock.ev.on("connection.update", async (update) => {
+                const { connection, lastDisconnect, qr } = update;
+
+                // Handle QR code
+                if (qr && !qrSent) {
+                    qrSent = true;
                     try {
-                        const { upload } = require('./mega');
-                        const mega_url = await upload(fs.createReadStream(rf), `${sock.user.id}.json`);
-                        const string_session = mega_url.replace('https://mega.nz/file/', '');
-                        let md = "Gifted~" + string_session;
-                        let code = await sock.sendMessage(sock.user.id, { text: md });
-                        let desc = `*Hey there, DAVE-MD User!* 👋🏻
-
-Thanks for using *DAVE-MD* — your session has been successfully created!
-
-🔐 *Session ID:* Sent above  
-⚠️ *Keep it safe!* Do NOT share this ID with anyone.
-
-——————
-
-*✅ Stay Updated:*  
-Join our official WhatsApp Channel:  
-https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k
-
-*💻 Source Code:*  
-Fork & explore the project on GitHub:  
-https://github.com/giftedsession/DAVE-PAIR
-
-——————
-
-> *© Powered by Gifted Dave*
-Stay cool and hack smart. ✌🏻`;
-                        await sock.sendMessage(sock.user.id, {
-text: desc,
-contextInfo: {
-externalAdReply: {
-title: "DAVE-MD 𝕮𝖔𝖓𝖓𝖊𝖈𝖙𝖊𝖉",
-thumbnailUrl: "https://files.catbox.moe/nxzaly.jpg",
-sourceUrl: "https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k",
-mediaType: 1,
-renderLargerThumbnail: true
-}  
-}
-},
-{quoted:code })
-                    } catch (e) {
-                            let ddd = sock.sendMessage(sock.user.id, { text: e });
-                            let desc = `*Hey there, DAVE-MD User!* 👋🏻
-
-Thanks for using *DAVE-MD* — your session has been successfully created!
-
-🔐 *Session ID:* Sent above  
-⚠️ *Keep it safe!* Do NOT share this ID with anyone.
-
-——————
-
-*✅ Stay Updated:*  
-Join our official WhatsApp Channel:  
-https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k
-
-*💻 Source Code:*  
-Fork & explore the project on GitHub:  
-https://github.com/giftedsession/DAVE-PAIR
-
-> *© Powered by Gifted Dave*
-Stay cool and hack smart. ✌🏻*`;
-                            await sock.sendMessage(sock.user.id, {
-text: desc,
-contextInfo: {
-externalAdReply: {
-title: "GIFTED-MD 𝕮𝖔𝖓𝖓𝖊𝖈𝖙𝖊𝖉 ✅  ",
-thumbnailUrl: "https://files.catbox.moe/nxzaly.jpg",
-sourceUrl: "https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k",
-mediaType: 2,
-renderLargerThumbnail: true,
-showAdAttribution: true
-}  
-}
-},
-{quoted:ddd })
+                        const qrBuffer = await QRCode.toBuffer(qr);
+                        res.writeHead(200, {
+                            'Content-Type': 'image/png',
+                            'Content-Length': qrBuffer.length
+                        });
+                        res.end(qrBuffer);
+                    } catch (qrError) {
+                        console.error('QR generation error:', qrError);
                     }
-                    await delay(10);
-                    await sock.ws.close();
-                    await removeFile('./temp/' + id);
-                    console.log(`👤 ${sock.user.id} 𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗲𝗱 ✅ 𝗥𝗲𝘀𝘁𝗮𝗿𝘁𝗶𝗻𝗴 𝗽𝗿𝗼𝗰𝗲𝘀𝘀...`);
-                    await delay(10);
-                    process.exit();
-                } else if (connection === "close" && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode != 401) {
-                    await delay(10);
-                    MALVIN_XD_PAIR_CODE();
+                    return;
+                }
+
+                if (connection === "open") {
+                    try {
+                        await delay(3000);
+                        const filePath = __dirname + `/temp/${id}/creds.json`;
+                        
+                        if (!fs.existsSync(filePath)) {
+                            throw new Error('Credentials file not found');
+                        }
+
+                        const mega_url = await upload(fs.createReadStream(filePath), `${sock.user.id}.json`);
+                        const string_session = mega_url.replace('https://mega.nz/file/', '');
+                        let md = "dave~" + string_session;
+                        
+                        let code = await sock.sendMessage(sock.user.id, { text: md });
+                        
+                        let desc = `*Hey there, DAVE-MD User!* 👋🏻
+// ... your description text ...`;
+
+                        await sock.sendMessage(sock.user.id, {
+                            text: desc,
+                            contextInfo: {
+                                externalAdReply: {
+                                    title: "DAVE-MD 𝕮𝖔𝖓𝖓𝖊𝖈𝖙𝖊𝖉",
+                                    thumbnailUrl: "https://files.catbox.moe/nxzaly.jpg",
+                                    sourceUrl: "https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k",
+                                    mediaType: 1,
+                                    renderLargerThumbnail: true
+                                }  
+                            }
+                        }, { quoted: code });
+
+                        await delay(1000);
+                        await sock.ws.close();
+                        removeFile(dir);
+                        
+                        console.log(`👤 ${sock.user.id} 𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗲𝗱 ✅`);
+                        
+                        // Clean up session tracking
+                        activeSessions.delete(id);
+
+                    } catch (error) {
+                        console.error('Session processing error:', error);
+                        try {
+                            let ddd = await sock.sendMessage(sock.user.id, { text: `Error: ${error.message}` });
+                            
+                            let errorDesc = `*Hey there, DAVE-MD User!* 👋🏻
+// ... your error description text ...`;
+                            
+                            await sock.sendMessage(sock.user.id, {
+                                text: errorDesc,
+                                contextInfo: {
+                                    externalAdReply: {
+                                        title: "DAVE-MD Error ❌",
+                                        thumbnailUrl: "https://files.catbox.moe/nxzaly.jpg",
+                                        sourceUrl: "https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k",
+                                        mediaType: 2,
+                                        renderLargerThumbnail: true
+                                    }  
+                                }
+                            }, { quoted: ddd });
+                            
+                        } catch (msgError) {
+                            console.error('Failed to send error message:', msgError);
+                        }
+                        
+                        removeFile(dir);
+                        activeSessions.delete(id);
+                    }
+
+                } else if (connection === "close" && lastDisconnect?.error?.output?.statusCode !== 401) {
+                    console.log('Connection closed, cleaning up...');
+                    removeFile(dir);
+                    activeSessions.delete(id);
                 }
             });
+
         } catch (err) {
-            console.log("service restated");
-            await removeFile('./temp/' + id);
+            console.error("Initialization error:", err);
+            removeFile('./temp/' + id);
+            activeSessions.delete(id);
+            
             if (!res.headersSent) {
-                await res.send({ code: "❗ Service Unavailable" });
+                res.status(500).send({ code: "❗ Service Unavailable" });
             }
         }
     }
-    await MALVIN_XD_PAIR_CODE();
+
+    try {
+        await MALVIN_XD_PAIR_CODE();
+    } catch (error) {
+        console.error('Outer error:', error);
+        activeSessions.delete(id);
+        if (!res.headersSent) {
+            res.status(500).send({ error: "Internal server error" });
+        }
+    }
 });
-setInterval(() => {
-    console.log("☘️ 𝗥𝗲𝘀𝘁𝗮𝗿𝘁𝗶𝗻𝗴 𝗽𝗿𝗼𝗰𝗲𝘀𝘀...");
-    process.exit();
-}, 180000); //30min
+
+// REMOVED the destructive setInterval
+// setInterval(() => { process.exit(); }, 180000); // ❌ DELETE THIS
+
 module.exports = router;
-  
